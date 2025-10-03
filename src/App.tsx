@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Banner from './components/Banner';
-import CourseList from './components/CourseList';
+import TermPage from './components/TermPage';
 
 const App = () => {
   const [schedule, setSchedule] = useState({ title: '', courses: {} });
@@ -18,7 +18,7 @@ const App = () => {
   return (
     <div>
       <Banner title={schedule.title} />
-      <CourseList courses={schedule.courses} />
+      <TermPage courses={schedule.courses} />
     </div>
   );
 };
