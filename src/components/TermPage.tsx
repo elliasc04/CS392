@@ -11,9 +11,11 @@ interface Course {
 
 interface TermPageProps {
   courses: Record<string, Course>;
+  selectedCourses: Set<string>;
+  toggleCourse: (courseKey: string) => void;
 }
 
-const TermPage = ({ courses }: TermPageProps) => {
+const TermPage = ({ courses, selectedCourses, toggleCourse }: TermPageProps) => {
   const [selectedTerm, setSelectedTerm] = useState('Fall');
 
   const filteredCourses = Object.fromEntries(
@@ -24,7 +26,7 @@ const TermPage = ({ courses }: TermPageProps) => {
   return (
     <div>
       <TermSelector selectedTerm={selectedTerm} onTermChange={setSelectedTerm} />
-      <CourseList courses={filteredCourses} />
+      <CourseList courses={filteredCourses} selectedCourses={selectedCourses} toggleCourse={toggleCourse} />
     </div>
   );
 };
