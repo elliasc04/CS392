@@ -39,7 +39,7 @@ const TermPage = ({ courses, selectedCourses, toggleCourse }: TermPageProps) => 
           </button>
         </div>
       </div>
-      <CourseList courses={filteredCourses} selectedCourses={selectedCourses} toggleCourse={toggleCourse} />
+      <CourseList courses={filteredCourses} allCourses={courses} selectedCourses={selectedCourses} toggleCourse={toggleCourse} />
       {showModal && (
         <CoursePlanModal
           courses={courses}
