@@ -12,9 +12,10 @@ interface CourseListProps {
   allCourses: Record<string, Course>;
   selectedCourses: Set<string>;
   toggleCourse: (courseKey: string) => void;
+  onEdit: (courseKey: string) => void;
 }
 
-const CourseList = ({ courses, allCourses, selectedCourses, toggleCourse }: CourseListProps) => (
+const CourseList = ({ courses, allCourses, selectedCourses, toggleCourse, onEdit }: CourseListProps) => (
   <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4 p-6 max-w-[1400px] mx-auto">
     {Object.entries(courses).map(([key, course]) => {
       const isSelected = selectedCourses.has(key);
@@ -35,13 +36,22 @@ const CourseList = ({ courses, allCourses, selectedCourses, toggleCourse }: Cour
         >
           {hasConflict && (
             <div className="absolute top-2 right-2 text-red-600 font-bold text-sm">
-              ✗
+              Time Conflict
             </div>
           )}
           <h3 className="text-2xl font-semibold mb-2 text-gray-800">{course.term} CS {course.number}</h3>
           <p className="text-base mb-4 text-gray-600 flex-grow">{course.title}</p>
           <hr className="border-t border-gray-300 mb-4" />
-          <p className="text-[0.95rem] text-gray-600">{course.meets}</p>
+          <p className="text-[0.95rem] text-gray-600 mb-3">{course.meets}</p>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(key);
+            }}
+            className="text-sm rounded-md max-w-[6vh] border border-gray-300 font-bold text-gray-500 hover:text-gray-800"
+          >
+            Edit
+          </button>
         </div>
       );
     })}

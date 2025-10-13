@@ -2,6 +2,7 @@ import { useState } from 'react';
 import TermSelector from './TermSelector';
 import CourseList from './CourseList';
 import CoursePlanModal from './CoursePlanModal';
+import CourseEditModal from './CourseEditModal';
 
 interface Course {
   term: string;
@@ -19,6 +20,7 @@ interface TermPageProps {
 const TermPage = ({ courses, selectedCourses, toggleCourse }: TermPageProps) => {
   const [selectedTerm, setSelectedTerm] = useState('Fall');
   const [showModal, setShowModal] = useState(false);
+  const [editingCourseKey, setEditingCourseKey] = useState<string | null>(null);
 
   const filteredCourses = Object.fromEntries(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,12 +41,25 @@ const TermPage = ({ courses, selectedCourses, toggleCourse }: TermPageProps) => 
           </button>
         </div>
       </div>
-      <CourseList courses={filteredCourses} allCourses={courses} selectedCourses={selectedCourses} toggleCourse={toggleCourse} />
+      <CourseList
+        courses={filteredCourses}
+        allCourses={courses}
+        selectedCourses={selectedCourses}
+        toggleCourse={toggleCourse}
+        onEdit={setEditingCourseKey}
+      />
       {showModal && (
         <CoursePlanModal
           courses={courses}
           selectedCourses={selectedCourses}
           onClose={() => setShowModal(false)}
+        />
+      )}
+      {editingCourseKey && courses[editingCourseKey] && (
+        <CourseEditModal
+          course={courses[editingCourseKey]}
+          courseKey={editingCourseKey}
+          onClose={() => setEditingCourseKey(null)}
         />
       )}
     </div>
