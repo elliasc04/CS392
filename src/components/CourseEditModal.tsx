@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { validateCourseData, type ValidationErrors, isValidData } from '../utils/courseValidation';
+import { database, ref, set } from '../firebase/firebase';
 
 interface Course {
   term: string;
@@ -32,7 +33,7 @@ const CourseEditModal = ({ course, courseKey, onClose }: CourseEditModalProps) =
     setErrors(validationErrors);
   }, [title, meets, course.term, course.number]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!isValidData(errors)) {
@@ -40,8 +41,19 @@ const CourseEditModal = ({ course, courseKey, onClose }: CourseEditModalProps) =
       return;
     }
 
-    console.log("placeholder - form is valid");
-    // TODO: Submit form data
+    try {
+      const courseRef = ref(database, `courses/${courseKey}`);
+      await set(courseRef, {
+        term: course.term,
+        number: course.number,
+        title,
+        meets,
+      });
+      console.log('Course updated successfully');
+      onClose();
+    } catch (error) {
+      console.error('Error updating course:', error);
+    }
   };
 
   return (
@@ -109,6 +121,17 @@ const CourseEditModal = ({ course, courseKey, onClose }: CourseEditModalProps) =
               className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-sm transition-colors"
             >
               Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={!isValidData(errors)}
+              className={`px-6 py-2 rounded-sm transition-colors ${
+                isValidData(errors)
+                  ? 'bg-gray-300 hover:bg-gray-400 text-gray-800'
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              Submit
             </button>
           </div>
         </form>

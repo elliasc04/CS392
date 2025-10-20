@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
 import Banner from './components/Banner';
 import TermPage from './components/TermPage';
+import { database, ref, onValue } from './firebase/firebase';
 
 const App = () => {
   const [schedule, setSchedule] = useState({ title: '', courses: {} });
   const [selectedCourses, setSelectedCourses] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      const response = await fetch('https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php');
-      const data = await response.json();
-      setSchedule(data);
-    };
+    const coursesRef = ref(database, '/');
 
-    fetchCourses();
+    const unsubscribe = onValue(coursesRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setSchedule(data);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const toggleCourse = (courseKey: string) => {
