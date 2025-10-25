@@ -15,9 +15,10 @@ interface TermPageProps {
   courses: Record<string, Course>;
   selectedCourses: Set<string>;
   toggleCourse: (courseKey: string) => void;
+  isAuthenticated: boolean;
 }
 
-const TermPage = ({ courses, selectedCourses, toggleCourse }: TermPageProps) => {
+const TermPage = ({ courses, selectedCourses, toggleCourse, isAuthenticated }: TermPageProps) => {
   const [selectedTerm, setSelectedTerm] = useState('Fall');
   const [showModal, setShowModal] = useState(false);
   const [editingCourseKey, setEditingCourseKey] = useState<string | null>(null);
@@ -47,6 +48,7 @@ const TermPage = ({ courses, selectedCourses, toggleCourse }: TermPageProps) => 
         selectedCourses={selectedCourses}
         toggleCourse={toggleCourse}
         onEdit={setEditingCourseKey}
+        isAuthenticated={isAuthenticated}
       />
       {showModal && (
         <CoursePlanModal

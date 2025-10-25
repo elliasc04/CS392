@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import Banner from './components/Banner';
+import AuthBanner from './components/AuthBanner';
 import TermPage from './components/TermPage';
 import { database, ref, onValue } from './firebase/firebase';
+import { useAuth } from './hooks/useAuth';
 
 const App = () => {
   const [schedule, setSchedule] = useState({ title: '', courses: {} });
   const [selectedCourses, setSelectedCourses] = useState<Set<string>>(new Set());
+  const { user, loading, signInWithGoogle, signOutUser } = useAuth();
 
   useEffect(() => {
     const coursesRef = ref(database, '/');
@@ -34,8 +37,19 @@ const App = () => {
 
   return (
     <div>
+      <AuthBanner
+        user={user}
+        loading={loading}
+        onSignIn={signInWithGoogle}
+        onSignOut={signOutUser}
+      />
       <Banner title={schedule.title} />
-      <TermPage courses={schedule.courses} selectedCourses={selectedCourses} toggleCourse={toggleCourse} />
+      <TermPage
+        courses={schedule.courses}
+        selectedCourses={selectedCourses}
+        toggleCourse={toggleCourse}
+        isAuthenticated={!!user}
+      />
     </div>
   );
 };
