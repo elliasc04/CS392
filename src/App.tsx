@@ -8,7 +8,7 @@ import { useAuth } from './hooks/useAuth';
 const App = () => {
   const [schedule, setSchedule] = useState({ title: '', courses: {} });
   const [selectedCourses, setSelectedCourses] = useState<Set<string>>(new Set());
-  const { user, loading, signInWithGoogle, signOutUser } = useAuth();
+  const { user, loading, isAdmin, signInWithGoogle, signOutUser } = useAuth();
 
   useEffect(() => {
     const coursesRef = ref(database, '/');
@@ -48,7 +48,7 @@ const App = () => {
         courses={schedule.courses}
         selectedCourses={selectedCourses}
         toggleCourse={toggleCourse}
-        isAuthenticated={!!user}
+        isAdmin={isAdmin}
       />
     </div>
   );

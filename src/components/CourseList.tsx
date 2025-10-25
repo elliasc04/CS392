@@ -13,10 +13,10 @@ interface CourseListProps {
   selectedCourses: Set<string>;
   toggleCourse: (courseKey: string) => void;
   onEdit: (courseKey: string) => void;
-  isAuthenticated: boolean;
+  isAdmin: boolean;
 }
 
-const CourseList = ({ courses, allCourses, selectedCourses, toggleCourse, onEdit, isAuthenticated }: CourseListProps) => (
+const CourseList = ({ courses, allCourses, selectedCourses, toggleCourse, onEdit, isAdmin }: CourseListProps) => (
   <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4 p-6 max-w-[1400px] mx-auto">
     {Object.entries(courses).map(([key, course]) => {
       const isSelected = selectedCourses.has(key);
@@ -44,7 +44,7 @@ const CourseList = ({ courses, allCourses, selectedCourses, toggleCourse, onEdit
           <p className="text-base mb-4 text-gray-600 flex-grow">{course.title}</p>
           <hr className="border-t border-gray-300 mb-4" />
           <p className="text-[0.95rem] text-gray-600 mb-3">{course.meets}</p>
-          {isAuthenticated && (
+          {isAdmin && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
