@@ -11,6 +11,7 @@ const TermSelector = ({ selectedTerm, onTermChange }: TermSelectorProps) => {
       {terms.map((term) => (
         <button
           key={term}
+          data-cy={term}
           onClick={() => onTermChange(term)}
           className={`px-6 py-2 rounded-sm transition-colors ${
             selectedTerm === term

@@ -27,6 +27,7 @@ const CourseList = ({ courses, allCourses, selectedCourses, toggleCourse, onEdit
         <div
           key={key}
           onClick={() => !isDisabled && toggleCourse(key)}
+          data-cy="course"
           className={`border-2 rounded-lg p-6 flex flex-col shadow-sm transition-colors relative ${
             isDisabled
               ? 'border-gray-300 bg-gray-100 cursor-not-allowed opacity-50'
